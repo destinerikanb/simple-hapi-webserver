@@ -124,3 +124,34 @@ METHOD/VERB REQUEST DAN routing
         ]
 
         module.exports = routes;
+
+PATH PARAMETER
+> Path dalam routing bisa dikatakan sebagai alamat yang digunakan client untuk melakukan permintaan ke server
+> Alamat atau path yang dibuat biasanya merupakan teks verbal yang dapat dimengerti oleh client 
+> Hanya dengan membaca path dari sebuah tautan biasanya kita langsung tahu apa yang client minta pada server
+> Teknik path parameter pada Hapi diterapkan dengan membungkus path dengan tanda {}
+
+        server.route({
+            method : 'GET',
+            path : '/users/{username}',
+            handler : (request, h) => {
+                const {username} = request.params;
+                return `Hello, ${username}`;
+            }
+        })
+
+> Nilai path parameter wajib diisi oleh client, bila tidak maka server akan mengalami error
+> Pada Hapi kita bisa membuat path parameter bersifat opsional dengan menambahkan tanda ? di akhir nama parameternya
+
+        server.route({
+            method : 'GET',
+            path : '/users/{username?},
+            handler : (request, h) => {
+                const {username = 'stranger'} = request.params;
+                return `Hello, ${username}`; 
+            }
+        })
+
+> Kita dapat menentukan lebih dari 1 path parameter.
+> Namun optional path parameter hanya dapat digunakan di akhir bagian path saja.
+
