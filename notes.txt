@@ -172,3 +172,19 @@ QUERY PARAMETERS
             }
         })
 
+
+BODY/PAYLOAD REQUEST
+> Ketika menggunakan Node.js, untuk mendapatkan data pada body request, meskipun datanya hanya sebatas teks
+  kita tetap harus berurusan dengan Readable Stream
+> Pada Hapi kita tidak perlu berurusan dengan Readable Stream, Hapi secara default akan mengubah payload JSON menjadi
+  object JavaScript. Dengan begitu kita tidak lagi berurusan dengan JSON.parse()
+> Payload yang dikirim client dapat diakses pada route handler melalui properti request.payload
+
+        server.route({
+            method : 'POST',
+            path : '/login',
+            handler : (request, h) => {
+                const {username, password} = request.payload;
+                return `Welcome, ${userbame}!`;
+            }
+        })
