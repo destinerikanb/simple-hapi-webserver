@@ -19,3 +19,36 @@ WEB FRAMEWORK
         - Kita perlu belajar secara dalam untuk menguasai framework ini.
 
 MEMBUAT HTTP SERVER
+- Tidak melalui core module http, akan tetapi 3rd party @hapi/hapi
+- Instal dengan : npm install @hapi/hapi
+- Menggunakan module : const Hapi = require('@hapi/hapi');
+> Membuat HTTP Server pada hapi
+
+    const Hapi = require('@hapi/hapi');
+
+    const init = async () => {
+        const server = Hapi.server({
+            port : 5000,
+            host : 'localhost',
+        })
+
+        await server.start();
+        console.log(`Server berjalan pada ${server.info.uri}`);
+    }
+
+    init();
+
+> Bedah kode :
+    - Server dibuat dengan kode : Hapi.server()
+        - Method ini menerima 1 parameter yaitu object ServerOptions
+        - Object ServerOptions menampung konfigurasi server, seperti properti port dan host
+    
+    - Server dijalankan dengan : server.start()
+        - Proses menjalankan server dilakukan secara asinkron
+        - Server dijalankan didalam fungsi async dan menggunakan await untuk memanggil server.start()
+    
+    - Setelah server dijalankan kita bisa melihat alamat lengkap dan port dimana server dijalankan dengan :
+        server.info.uri
+
+> Saat mengirim request melalui curl : curl -X GET http://localhost:5000 akan diberi response not found 
+  karena tidak ada response handler untuk menangani permintaan
