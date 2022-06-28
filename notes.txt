@@ -155,3 +155,20 @@ PATH PARAMETER
 > Kita dapat menentukan lebih dari 1 path parameter.
 > Namun optional path parameter hanya dapat digunakan di akhir bagian path saja.
 
+QUERY PARAMETERS
+> Teknik ini umum digunakan pada permintaan yang membutuhkan kueri dari client, contohnya seperti pencarian dan filter data
+> Data yang dikirim melalui query memiliki format key=value
+
+        localhost:5000?name=harry&location=bali
+
+> Kita bisa mendapatkan nilai dari query parameter melalui request.query
+
+        server.route({
+            method : 'GET',
+            path : '/',
+            handler : (request, h) => {
+                const {name, location} = request.query;
+                return `Hello, ${name} from ${location}`;
+            }
+        })
+
