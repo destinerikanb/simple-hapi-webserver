@@ -52,3 +52,75 @@ MEMBUAT HTTP SERVER
 
 > Saat mengirim request melalui curl : curl -X GET http://localhost:5000 akan diberi response not found 
   karena tidak ada response handler untuk menangani permintaan
+
+
+METHOD/VERB REQUEST DAN routing
+> Setelah membuat dan menjalankan server, perlu menambahkan routing agar server dapat merespons permintaan sesuai dengan
+  method dan url yang diminta oleh client
+> Routing pada hapi tidak dilakukan di dalam request handler seperti cara native
+> Yakni memanfaatkan object route configuration yang disimpan pada method server.route()
+
+        const init = async () => {
+            const server = Hapi.server({
+                port : 5000,
+                host : 'localhost',
+            })
+
+            server.route({
+                method : 'GET',
+                path : '/',
+                handler : (request, h) => {
+                    return 'Hello World!';
+                }
+            })
+        }
+
+> Object route configuration  memiliki properti yang dapat dimanfaatkan untuk menspesifikasi route yang diinginkan
+> Termasuk menspesifikasi :
+    - method
+    - path
+    - handler function (request handler)
+> Handler pada hapi dipisahkan berdasarkan route, setiap spesifikasi route memiliki handlernya masing-masing. Kode semakin mudah dikelola.
+> Untuk menetapkan lebih dari 1 route configuration dalam method server.route() kita dapat menggunakan array dari route configuration
+> Dengan array route configuration kita dapat secara mudah menentukan banyak spesifikasi route
+
+        const init = async () => {
+            const server = Hapi.server({
+                port : 5000,
+                host : 'localhost',
+            })
+
+            //Menentukan route
+            server.route([
+                {
+                    method : 'GET',
+                    path :'/',
+                    handler : (request, h) => {
+                        return 'Homepage';
+                    }
+                },
+            ])
+        }
+
+> Pisahkan seluruh route configuration pada berkas JavaScript berbeda, agar 1 berkas JavaScript hanya memiliki 1 fungsi/tanggungjawab
+
+        route.js
+
+        const routes = [
+            {
+                method : 'GET',
+                path : '/',
+                handler : (request, h) => {
+                    return 'Homepage';
+                }
+            },
+            {
+                method: 'GET',
+                path: '/about',
+                handler: (request, h) => {
+                    return 'About page';
+                }
+            }
+        ]
+
+        module.exports = routes;
