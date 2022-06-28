@@ -188,3 +188,45 @@ BODY/PAYLOAD REQUEST
                 return `Welcome, ${userbame}!`;
             }
         })
+
+
+RESPONSE TOOLKIT
+> Fungsi handler pada Hapi memiliki 2 parameter :
+    - request : object yang menampung detail dari permintaan client (path, query param, payload, header, dsb)
+    - h : response toolkit dimana ia adalah object yang menampung banyak sekali method yang digunakan untuk menanggapi 
+          sebuah permintaan client, serupa dengan object response pada Node.js native
+> Jika hanya ingin mengembalikan nilai pada sebuah request yang datang, di Hapi kita bisa secara langsung mengembalikan
+  nilai dalam bentuk teks, teks HTML, JSON, steam, atau bahkan promise
+> Namun dengan cara tersebut status response akan selalu bernilai 200 OK.
+> Ketika kita ingin mengubah status response, kita dapat menggunakan parameter hal
+
+        server.route({
+            method : 'POST',
+            path : '/user',
+            handler : (response, h) => {
+                return h.response('create').code(201);
+            }
+        })
+
+> Fungsi handler harus selalu mengembalikan sebuah nilai, bila kita menggunakan h ketika menangani request
+  maka kembalikanlah dengan nilai h.response().
+> Paramater h tidak hanya menetapkan status kode respons, tetapi juga dapat menetapkan :
+    - header response
+    - content type
+    - content length
+    - dsb
+
+        //Detailed notation
+        const handler = (request, h) => {
+            const response = h.response('success');
+            response.type('text/plain');
+            response.header('X-Custom', 'some-value');
+            return response;
+        }
+
+        //Chained notation
+        const handler = (request, h) => {
+            return h.response('success')
+                .type('text/plain')
+                .header('X-Custom', 'some-value')
+        }

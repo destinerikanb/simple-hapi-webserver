@@ -1,3 +1,4 @@
+const handlerFunc = require('./handler')
 const routes = [
     {
         method : 'GET',
@@ -48,6 +49,11 @@ const routes = [
             const {username, password} = request.payload;
             return `Welcome, ${username}!`;
         }
+    },
+    {
+        method : 'GET',
+        path : '/responsetoolkit',
+        handler : handlerFunc
     },
     {
         method : '*',
